@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WEBMVC.Data;
 
@@ -11,9 +12,11 @@ using WEBMVC.Data;
 namespace WEBMVC.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230718142225_FixBookandCategoryBook2_18_7")]
+    partial class FixBookandCategoryBook2_18_7
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -35,21 +38,6 @@ namespace WEBMVC.Migrations
                     b.HasIndex("CategoryBooksCategoryBookId");
 
                     b.ToTable("BookCategoryBook");
-                });
-
-            modelBuilder.Entity("BookRepository", b =>
-                {
-                    b.Property<int>("BooksBookId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RepositoriesRepositoryID")
-                        .HasColumnType("int");
-
-                    b.HasKey("BooksBookId", "RepositoriesRepositoryID");
-
-                    b.HasIndex("RepositoriesRepositoryID");
-
-                    b.ToTable("BookRepository");
                 });
 
             modelBuilder.Entity("WEBMVC.Models.Account", b =>
@@ -138,29 +126,6 @@ namespace WEBMVC.Migrations
                     b.ToTable("CategoryRoles");
                 });
 
-            modelBuilder.Entity("WEBMVC.Models.Repository", b =>
-                {
-                    b.Property<int>("RepositoryID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RepositoryID"));
-
-                    b.Property<string>("RepositoryName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("RepositoryID");
-
-                    b.HasIndex("UserId")
-                        .IsUnique();
-
-                    b.ToTable("Repositories");
-                });
-
             modelBuilder.Entity("WEBMVC.Models.User", b =>
                 {
                     b.Property<int>("UserId")
@@ -205,21 +170,6 @@ namespace WEBMVC.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("BookRepository", b =>
-                {
-                    b.HasOne("WEBMVC.Models.Book", null)
-                        .WithMany()
-                        .HasForeignKey("BooksBookId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("WEBMVC.Models.Repository", null)
-                        .WithMany()
-                        .HasForeignKey("RepositoriesRepositoryID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("WEBMVC.Models.Account", b =>
                 {
                     b.HasOne("WEBMVC.Models.CategoryRole", "CategoryRoleID")
@@ -239,23 +189,9 @@ namespace WEBMVC.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("WEBMVC.Models.Repository", b =>
-                {
-                    b.HasOne("WEBMVC.Models.User", "User")
-                        .WithOne("Repository")
-                        .HasForeignKey("WEBMVC.Models.Repository", "UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("WEBMVC.Models.User", b =>
                 {
                     b.Navigation("Account")
-                        .IsRequired();
-
-                    b.Navigation("Repository")
                         .IsRequired();
                 });
 #pragma warning restore 612, 618
